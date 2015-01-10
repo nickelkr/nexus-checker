@@ -3,7 +3,7 @@ A simple program to check if the Google Nexus 6 is available.
 
 ### Purpose
 I was tired of hitting refresh on Wednesdays to see if the Nexus 6 64 GB was
-available.
+available. Plus it was a good excuse for a simple first project in Go!
 
 ### How to run
 First build the project:
