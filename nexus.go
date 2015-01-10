@@ -16,54 +16,38 @@ var (
 	color     = flag.String("color", "white", "The color of phone")
 	duration  = flag.Int("duration", 10, "The sleep time between checks")
 )
-
+/* Struct originally created to utilize recieving just the headers and checking
+the byte length to see if the page had changed. I don't know if this was
+actually worth the trouble. */
 type Page struct {
 	Url        string
-	LastLength string
 }
 
-func (p *Page) changed() (bool, error) {
-	resp, err := http.Head(p.Url)
-	if err != nil {
-		return false, err
-	}
-
-	newLength := resp.Header["Content-Length"][0]
-
-	if p.LastLength != newLength {
-		p.LastLength = resp.Header["Content-Length"][0]
-		return true, nil
-	} else {
-		return false, nil
-	}
-}
-
-func (p *Page) update(length string) {
-	p.LastLength = length
-}
-
-func (p *Page) request() ([]byte, error) {
-	resp, err := http.Get(p.Url)
-	defer resp.Body.Close()
-	if err != nil {
-		return nil, err
-	}
-	if result, exists := resp.Header["Content-Length"]; exists {
-		p.update(result[0])
-	}
-	return ioutil.ReadAll(resp.Body)
-}
-
-func check(page []byte) bool {
-	regex := regexp.MustCompile("out of inventory")
-	unavailable := regex.Find(page)
-	if unavailable == nil {
+// Contains checks to see if a given string exists in a webpage.
+func (p *Page) contains(exp string) bool {
+	regex := regexp.MustCompile(exp)
+	if regex.Find(p.request()) == nil {
 		return true
 	} else {
 		return false
 	}
 }
 
+// Request issues a GET request and returns the body of the response.
+func (p *Page) request() []byte {
+	resp, err := http.Get(p.Url)
+	defer resp.Body.Close()
+	if err != nil {
+		die(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		die(err)
+	}
+	return body
+}
+
+// CheckParams looks at the provided flags and sets appropriately.
 func checkParams() {
 	if *color == "white" {
 		longColor = "Cloud_White"
@@ -76,7 +60,8 @@ func checkParams() {
 	}
 }
 
-func die(error) {
+// Die prints the error to STDERR and exits with '1' status code.
+func die(err error) {
 	fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 	os.Exit(1)
 }
@@ -88,21 +73,12 @@ func main() {
 		Url: fmt.Sprintf("https://play.google.com/store/devices/details/Nexus_6_%dGB_%s?id=nexus_6_%s_%dgb", *size, longColor, *color, *size),
 	}
 	for {
-		changed, err := page.changed()
-		if err != nil {
-			die(err)
+		if page.contains("We are out of inventory") {
+			fmt.Fprintf(os.Stderr, "Out of stock, still...")
+		} else {
+			fmt.Println("In stock, go get nexus 6!!!")
 		}
-		if changed {
-			body, err := page.request()
-			if err != nil {
-				die(err)
-			}
-			if check(body) {
-				fmt.Println("In stock!")
-			} else {
-				fmt.Println("Out of stock... still...")
-			}
-		}
+
 		time.Sleep(time.Duration(*duration) * time.Second)
 	}
 }
