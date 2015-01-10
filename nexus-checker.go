@@ -16,7 +16,7 @@ var (
 	color     = flag.String("color", "white", "The color of phone")
 	duration  = flag.Int("duration", 10, "The sleep time between checks")
 )
-/* Struct originally created to utilize recieving just the headers and checking
+/* Struct originally created to utilize receiving just the headers and checking
 the byte length to see if the page had changed. I don't know if this was
 actually worth the trouble. */
 type Page struct {
