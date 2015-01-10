@@ -54,10 +54,10 @@ func checkParams() {
 	if *color == "white" {
 		longColor = "Cloud_White"
 	} else {
-		*color = "Midnight_Blue"
-		longColor = "blue"
+		*color = "blue"
+		longColor = "Midnight_Blue"
 	}
-	if *size != 64 || *size != 32 {
+	if *size != 64 && *size != 32 {
 		*size = 64
 	}
 }
@@ -76,7 +76,7 @@ func main() {
 	}
 	for {
 		if page.contains("We are out of inventory") {
-			fmt.Fprintf(os.Stderr, "Out of stock, still...")
+			fmt.Fprintf(os.Stderr, "Out of stock, still...\n")
 		} else {
 			fmt.Println("In stock, go get nexus 6!!!")
 			if runtime.GOOS == "darwin" {
