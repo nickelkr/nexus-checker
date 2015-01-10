@@ -28,8 +28,8 @@ Example with options that would search for a 32GB Midnight Blue Nexus 6 every
 
 ### OSX and Chrome
 If you are on OSX and have Chrome installed it will open the purchase page for
-the phone version it was monitoring. This is very basic and if you're one OSX
-but dont' have Chrome installed it will return an error and die.
+the phone version it was monitoring. This is very basic and if you're on OSX
+but don't have Chrome installed it will return an error and die.
 
 ### Notes
 Originally, the nexus-checker would issue a http.Head() request and utilize the
