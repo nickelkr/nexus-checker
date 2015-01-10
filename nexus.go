@@ -27,9 +27,9 @@ type Page struct {
 func (p *Page) contains(exp string) bool {
 	regex := regexp.MustCompile(exp)
 	if regex.Find(p.request()) == nil {
-		return true
-	} else {
 		return false
+	} else {
+		return true
 	}
 }
 
