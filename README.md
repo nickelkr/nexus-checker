@@ -26,6 +26,11 @@ Example with options that would search for a 32GB Midnight Blue Nexus 6 every
 3 seconds:
 `./nexus-checker -size 32 -color blue -duration 3`
 
+### OSX and Chrome
+If you are on OSX and have Chrome installed it will open the purchase page for
+the phone version it was monitoring. This is very basic and if you're one OSX
+but dont' have Chrome installed it will return an error and die.
+
 ### Notes
 Originally, the nexus-checker would issue a http.Head() request and utilize the
 Content-Length attribute to determine if the page had changed. If the page had

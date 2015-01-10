@@ -6,8 +6,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/exec"
 	"regexp"
 	"time"
+	"runtime"
 )
 
 var (
@@ -77,6 +79,13 @@ func main() {
 			fmt.Fprintf(os.Stderr, "Out of stock, still...")
 		} else {
 			fmt.Println("In stock, go get nexus 6!!!")
+			if runtime.GOOS == "darwin" {
+				chrome := exec.Command(`/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`, page.Url)
+				err := chrome.Run()
+				if err != nil {
+					die(err)
+				}
+			}
 		}
 
 		time.Sleep(time.Duration(*duration) * time.Second)
