@@ -22,6 +22,10 @@ Without any options provided, the checker defaults:
 - color    ~> white
 - duration ~> 10 seconds
 
+Example with options that would search for a 32GB Midnight Blue Nexus 6 every
+3 seconds:
+`./nexus-checker -size 32 -color blue -duration 3`
+
 ### Notes
 Originally, the nexus-checker would issue a http.Head() request and utilize the
 Content-Length attribute to determine if the page had changed. If the page had
